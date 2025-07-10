@@ -1,0 +1,50 @@
+<div class="card">
+  <!-- Barra de navegación -->
+  <p-menubar [model]="items">
+    <!-- Logo / branding -->
+    <ng-template #start>
+      <div class="flex items-center gap-2">
+        <svg
+          width="33"
+          height="35"
+          viewBox="0 0 33 35"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- ... Tu SVG ... -->
+        </svg>
+        <span class="text-xl font-semibold"
+          >MI<span class="text-primary">DESPACHO</span></span
+        >
+      </div>
+    </ng-template>
+
+    <!-- Elemento de usuario con menú -->
+    <ng-template #end>
+      <div
+        class="flex items-center gap-2 relative"
+        (click)="$event.stopPropagation()"
+      >
+        <p-avatar
+          class="cursor-pointer"
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          shape="circle"
+          (click)="toggleUserMenu($event)"
+        ></p-avatar>
+
+        <p-tieredMenu #userMenu [model]="userItems" popup appendTo="body" />
+      </div>
+    </ng-template>
+
+    <!-- Items -->
+    <ng-template #item let-item let-root="root">
+      <a pRipple class="flex items-center p-menubar-item-link">
+        <span>{{ item.label }}</span>
+        <i
+          *ngIf="item.items"
+          [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+        ></i>
+      </a>
+    </ng-template>
+  </p-menubar>
+</div>
