@@ -10,6 +10,7 @@ import { take } from 'rxjs';
 import { BadgeModule } from 'primeng/badge';
 import { MenuItem } from 'primeng/api';
 import { TieredMenu } from 'primeng/tieredmenu';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes-list',
@@ -38,7 +39,11 @@ export class ClientesListComponent implements OnInit {
   @Input() paginacion: Paginacion[] = [];
 
   @ViewChild('dt', { static: true }) dt!: Table;
-  constructor(private clientesService: ClientesService) {}
+  constructor(
+    private clientesService: ClientesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.getClientes();
@@ -87,6 +92,7 @@ export class ClientesListComponent implements OnInit {
   }
 
   verCliente(cliente: Cliente) {
+    this.router.navigate([cliente.id], { relativeTo: this.activatedRoute });
     console.log('Ver', cliente);
   }
 

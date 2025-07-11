@@ -24,4 +24,8 @@ export class ClientesService {
       dto
     );
   }
+
+  getClienteById(id: string): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.clientessUrl}/${id}`);
+  }
 }

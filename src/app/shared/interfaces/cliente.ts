@@ -8,6 +8,7 @@ export interface Cliente {
   correo: string;
   imgPerfilUrl?: string;
   createdAt: string;
+  expedientes?: any;
 }
 
 export interface ClientesLazyResponse {

@@ -1,0 +1,167 @@
+<div class="card p-6 max-w-7xl mx-auto">
+  <div class="card">
+    <p-table
+      [value]="expedientes"
+      [tableStyle]="{ 'min-width': '60rem' }"
+      class="w-full md:w-[90%] lg:w-[80%]"
+      [paginator]="true"
+      [rows]="5"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [showCurrentPageReport]="true"
+      responsiveLayout="stack"
+      breakpoint="960px"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} expedientes"
+    >
+      <ng-template #caption>
+        <div class="flex items-center justify-between my-6 border-b pb-3">
+          <div class="flex items-center gap-3">
+            <i class="pi pi-users text-primary text-2xl"></i>
+            <h2 class="text-2xl font-semibold text-gray-800">
+              <span class="text-primary">Expedientes</span>
+            </h2>
+          </div>
+          <!-- Botón para agregar nuevo expediente -->
+          <button
+            pButton
+            pRipple
+            label="Nuevo Expediente"
+            icon="pi pi-plus"
+            class="p-button-sm p-button-primary"
+            (click)="addExpediente()"
+          ></button>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th>Referencia</th>
+          <th>Tipo de Expediente</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Juzgado</th>
+          <th>Etapa Procesal</th>
+          <th>Apertura</th>
+          <th>Cierre</th>
+          <th>Archivos</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-expediente>
+        <tr>
+          <td>{{ expediente.numeroReferencia }}</td>
+          <td>{{ expediente.tipoExpediente?.nombre }}</td>
+          <td>{{ expediente.titulo }}</td>
+          <td>
+            <p
+              class="line-clamp-2 text-sm text-gray-700 max-w-xs"
+              [pTooltip]="expediente.descripcion"
+            >
+              {{ expediente.descripcion }}
+            </p>
+          </td>
+
+          <td>{{ expediente.juzgado }}</td>
+          <td>{{ expediente.etapaProcesal }}</td>
+          <td>{{ expediente.fechaApertura | date }}</td>
+          <td>{{ expediente.fechaCierre | date }}</td>
+          <td pTooltip="Cantidad de archivos">
+            <p-badge [value]="expediente.archivos.length"></p-badge>
+          </td>
+          <td>
+            <p-tag
+              [value]="expediente.estado"
+              [severity]="getEstadoSeverity(expediente.estado)"
+            />
+          </td>
+          <td class="text-center">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-ellipsis-v"
+              class="p-button-secondary p-button-rounded p-button-text options-menu"
+              (click)="setMenuOptions(expediente); menu.toggle($event)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-tieredMenu #menu [model]="menuOptions" [popup]="true"></p-tieredMenu>
+  </div>
+</div>
+
+<p-dialog
+  [header]="'Referencia ' + expedienteSeleccionado?.numeroReferencia"
+  [(visible)]="showDialog"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [dismissableMask]="true"
+>
+  <div *ngIf="expedienteSeleccionado" class="space-y-4 text-sm text-gray-700">
+    <!-- Información general del expediente -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex items-start gap-2">
+        <i class="pi pi-book text-primary"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Título:</div>
+          <div>{{ expedienteSeleccionado.titulo }}</div>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2">
+        <i class="pi pi-info-circle text-primary"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Estado:</div>
+          <p-tag
+            [value]="expedienteSeleccionado.estado"
+            [severity]="getEstadoSeverity(expedienteSeleccionado.estado)"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 md:col-span-2">
+        <i class="pi pi-calendar text-primary"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Fecha de Apertura:</div>
+          <div>
+            {{ expedienteSeleccionado.fechaApertura | date : "longDate" }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="mt-2">
+      <div class="font-semibold text-gray-800 mb-1">Descripción:</div>
+      <div class="p-3 bg-surface-100 rounded-md text-justify">
+        {{ expedienteSeleccionado.descripcion }}
+      </div>
+    </div>
+
+    <!-- Archivos -->
+    <div>
+      <div class="font-semibold text-gray-800 mt-4 mb-2">
+        Archivos adjuntos:
+      </div>
+      <ul class="space-y-2">
+        <li
+          *ngFor="let archivo of expedienteSeleccionado.archivos"
+          class="flex items-center justify-between bg-surface-100 px-4 py-2 rounded-md"
+        >
+          <div class="flex items-center gap-2">
+            <i class="pi pi-file text-gray-500"></i>
+            <span>{{ archivo.nombre }}</span>
+          </div>
+          <button
+            pButton
+            icon="pi pi-download"
+            class="p-button-sm p-button-text"
+            (click)="descargarArchivo(archivo)"
+            label="Descargar"
+          ></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</p-dialog>
