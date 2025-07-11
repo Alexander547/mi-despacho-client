@@ -1,0 +1,27 @@
+<div class="flex flex-col items-center justify-center p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-7xl">
+    <!-- Expedientes por Tipo -->
+    <div class="card shadow-md rounded-lg p-4">
+      <h2
+        class="text-xl font-bold text-gray-700 mb-4 border-b pb-2 text-center"
+      >
+        📂 Expedientes por Tipo
+      </h2>
+      <p-chart type="bar" [data]="barChartData" style="height: 300px"></p-chart>
+    </div>
+
+    <!-- Casos Nuevos por Mes -->
+    <div class="card shadow-md rounded-lg p-4">
+      <h2
+        class="text-xl font-bold text-gray-700 mb-4 border-b pb-2 text-center"
+      >
+        📈 Casos Nuevos por Mes
+      </h2>
+      <p-chart
+        type="line"
+        [data]="lineChartData"
+        style="height: 300px"
+      ></p-chart>
+    </div>
+  </div>
+</div>
