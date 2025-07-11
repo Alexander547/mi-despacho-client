@@ -3,19 +3,13 @@
   <p-menubar [model]="items">
     <!-- Logo / branding -->
     <ng-template #start>
-      <div class="flex items-center gap-2">
-        <svg
-          width="33"
-          height="35"
-          viewBox="0 0 33 35"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      <div class="flex items-center gap-3 px-4 py-2">
+        <img src="assets/images/logo.png" alt="Logo" class="h-10 w-auto" />
+        <span
+          class="text-xl md:text-2xl font-semibold tracking-wide text-gray-800"
         >
-          <!-- ... Tu SVG ... -->
-        </svg>
-        <span class="text-xl font-semibold"
-          >MI<span class="text-primary">DESPACHO</span></span
-        >
+          MI<span class="text-primary">DESPACHO</span>
+        </span>
       </div>
     </ng-template>
 
@@ -25,6 +19,10 @@
         class="flex items-center gap-2 relative"
         (click)="$event.stopPropagation()"
       >
+        <div class="hidden md:flex flex-col text-right leading-tight">
+          <span class="font-semibold">Maria Pérez</span>
+          <span class="text-sm text-muted">Abogada</span>
+        </div>
         <p-avatar
           class="cursor-pointer"
           image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
@@ -38,8 +36,15 @@
 
     <!-- Items -->
     <ng-template #item let-item let-root="root">
-      <a pRipple class="flex items-center p-menubar-item-link">
+      <a
+        pRipple
+        class="flex items-center p-menubar-item-link"
+        [routerLink]="item.routerLink"
+      >
+        <i [ngClass]="item.icon"></i>
+
         <span>{{ item.label }}</span>
+
         <i
           *ngIf="item.items"
           [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"

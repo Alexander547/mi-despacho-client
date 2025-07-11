@@ -7,6 +7,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { MenubarModule } from 'primeng/menubar';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -20,19 +21,32 @@ import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
     Ripple,
     TieredMenuModule,
     CommonModule,
+    RouterModule,
   ],
   standalone: true,
 })
 export class AppMenuComponent implements OnInit {
   items: MenuItem[] = [
-    { label: 'Inicio', icon: 'pi pi-home', routerLink: '/' },
-    { label: 'Clientes', icon: 'pi pi-users', routerLink: '/clientes' },
     {
-      label: 'Expedientes',
-      icon: 'pi pi-briefcase',
-      routerLink: '/expedientes',
+      label: 'Reportes',
+      icon: 'pi pi-chart-bar',
+      routerLink: '/',
     },
-    { label: 'Archivos', icon: 'pi pi-folder', routerLink: '/archivos' },
+    { separator: true },
+    { label: 'Clientes', icon: 'pi pi-users', routerLink: '/clientes' },
+    { separator: true },
+    {
+      label: 'Audiencias',
+      icon: 'pi pi-briefcase',
+    },
+    { separator: true },
+    { label: 'Documentación', icon: 'pi pi-folder' },
+    { separator: true },
+    { separator: true },
+    {
+      label: 'Notas',
+      icon: 'pi pi-book',
+    },
   ];
 
   userItems: MenuItem[] = [
@@ -55,51 +69,5 @@ export class AppMenuComponent implements OnInit {
   }
   constructor() {}
 
-  ngOnInit() {
-    //   this.items = [
-    //     {
-    //       label: 'Inicio',
-    //       icon: 'pi pi-home',
-    //       routerLink: ['/'],
-    //     },
-    //     {
-    //       label: 'Clientes',
-    //       icon: 'pi pi-users',
-    //       routerLink: ['/clientes'],
-    //     },
-    //     {
-    //       label: 'Expedientes',
-    //       icon: 'pi pi-briefcase',
-    //       routerLink: ['/expedientes'],
-    //     },
-    //     {
-    //       label: 'Archivos',
-    //       icon: 'pi pi-folder',
-    //       routerLink: ['/archivos'],
-    //     },
-    //     {
-    //       label: 'Configuración',
-    //       icon: 'pi pi-cog',
-    //       routerLink: ['/configuracion'],
-    //     },
-    //   ];
-    //   this.userItems = [
-    //     {
-    //       label: 'Ver Perfil',
-    //       icon: 'pi pi-user',
-    //       command: () => {
-    //         // lógica para ir al perfil
-    //         console.log('Ver perfil');
-    //       },
-    //     },
-    //     {
-    //       label: 'Cerrar sesión',
-    //       icon: 'pi pi-sign-out',
-    //       command: () => {
-    //         // lógica para cerrar sesión
-    //         console.log('Cerrar sesión');
-    //       },
-    //     },
-    //   ];
-  }
+  ngOnInit() {}
 }
