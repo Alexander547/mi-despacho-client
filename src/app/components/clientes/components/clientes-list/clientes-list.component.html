@@ -1,0 +1,73 @@
+<div class="card">
+  <div class="flex justify-center">
+    <p-table
+      [value]="clientes"
+      [tableStyle]="{ 'min-width': '60rem' }"
+      class="w-full md:w-[90%] lg:w-[80%]"
+      [paginator]="true"
+      [rows]="5"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [showCurrentPageReport]="true"
+      responsiveLayout="stack"
+      breakpoint="960px"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} clientes"
+    >
+      <ng-template #caption>
+        <div class="flex items-center justify-between my-6 border-b pb-3">
+          <div class="flex items-center gap-3">
+            <i class="pi pi-users text-primary text-2xl"></i>
+            <h2 class="text-2xl font-semibold text-gray-800">
+              Listado <span class="text-primary">Mis Clientes</span>
+            </h2>
+          </div>
+          <!-- Botón para agregar nuevo cliente -->
+          <button
+            pButton
+            pRipple
+            label="Nuevo Cliente"
+            icon="pi pi-plus"
+            class="p-button-sm p-button-primary"
+            (click)="addCliente()"
+          ></button>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th>Perfil</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Télefono</th>
+          <th>Correo</th>
+          <th>Expedientes</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-cliente>
+        <tr>
+          <td>
+            <img [src]="cliente.imgPerfilUrl" class="w-12 rounded-full" />
+          </td>
+          <td>{{ cliente.nombres }}</td>
+          <td>{{ cliente.apellidos }}</td>
+
+          <td>{{ cliente.telefono }}</td>
+          <td>{{ cliente.correo }}</td>
+          <td>
+            <p-badge [value]="cliente.expedientesCount"></p-badge>
+          </td>
+          <td class="text-center">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-ellipsis-v"
+              class="p-button-secondary p-button-rounded p-button-text options-menu"
+              (click)="setMenuOptions(cliente); menu.toggle($event)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-tieredMenu #menu [model]="menuOptions" [popup]="true"></p-tieredMenu>
+</div>
