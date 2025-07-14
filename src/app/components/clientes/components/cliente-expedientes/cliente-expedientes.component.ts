@@ -65,22 +65,45 @@ export class ClienteExpedientesComponent implements OnInit {
     }
   }
 
+  //Retorno true o false, valida si tiene archivos o no
+  get tieneArchivos(): boolean {
+    return !!this.expedienteSeleccionado?.archivos?.length;
+  }
+
   setMenuOptions(expediente: Expediente): void {
-    this.menuOptions.push({
-      label: 'Detalle',
-      icon: 'pi pi-eye',
-      command: () => this.verExpediente(expediente),
-    });
-    this.menuOptions.push({
-      label: 'Modificar',
-      icon: 'pi pi-pencil',
-      command: () => this.editarExpediente(expediente),
-    });
-    this.menuOptions.push({
-      label: 'Eliminar',
-      icon: 'pi pi-trash',
-      command: () => this.eliminarExpediente(expediente),
-    });
+    this.menuOptions = [
+      {
+        label: 'Detalle',
+        icon: 'pi pi-eye',
+        command: () => this.verExpediente(expediente),
+      },
+      {
+        label: 'Modificar',
+        icon: 'pi pi-pencil',
+        command: () => this.editarExpediente(expediente),
+      },
+      {
+        label: 'Comentarios',
+        icon: 'pi pi-comments',
+        command: () => this.comentarExpediente(expediente),
+      },
+      {
+        label: 'Seguimiento',
+        icon: 'pi pi-history',
+        command: () => this.seguimientoExpediente(expediente),
+      },
+      {
+        label: 'Eliminar',
+        icon: 'pi pi-trash',
+        command: () => this.eliminarExpediente(expediente),
+      },
+    ];
+  }
+  seguimientoExpediente(expediente: Expediente): void {
+    console.log('Muestra los seguimientos/historial del expediente');
+  }
+  comentarExpediente(expediente: Expediente): void {
+    console.log('Comentarios sobre el expediente');
   }
 
   addExpediente() {

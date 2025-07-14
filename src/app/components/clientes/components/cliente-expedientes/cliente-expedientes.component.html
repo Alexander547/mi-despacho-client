@@ -95,22 +95,26 @@
   [header]="'Referencia ' + expedienteSeleccionado?.numeroReferencia"
   [(visible)]="showDialog"
   [modal]="true"
-  [style]="{ width: '500px' }"
-  [dismissableMask]="true"
+  [style]="{ width: '90vw', 'max-width': '800px' }"
+  [dismissableMask]="false"
+  [draggable]="false"
 >
-  <div *ngIf="expedienteSeleccionado" class="space-y-4 text-sm text-gray-700">
+  @if (expedienteSeleccionado) {
+  <div class="space-y-6 text-sm text-gray-700">
     <!-- Información general del expediente -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="flex items-start gap-2">
-        <i class="pi pi-book text-primary"></i>
+      <!-- Título -->
+      <div class="flex items-start gap-3">
+        <i class="pi pi-bookmark text-primary text-lg"></i>
         <div>
           <div class="font-semibold text-gray-800">Título:</div>
           <div>{{ expedienteSeleccionado.titulo }}</div>
         </div>
       </div>
 
-      <div class="flex items-start gap-2">
-        <i class="pi pi-info-circle text-primary"></i>
+      <!-- Estado -->
+      <div class="flex items-start gap-3">
+        <i class="pi pi-flag text-primary text-lg"></i>
         <div>
           <div class="font-semibold text-gray-800">Estado:</div>
           <p-tag
@@ -120,8 +124,36 @@
         </div>
       </div>
 
-      <div class="flex items-start gap-2 md:col-span-2">
-        <i class="pi pi-calendar text-primary"></i>
+      <!-- Tipo de expediente -->
+      <div class="flex items-start gap-3">
+        <i class="pi pi-tags text-primary text-lg"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Tipo de Expediente:</div>
+          <div>{{ expedienteSeleccionado.tipoExpediente?.nombre }}</div>
+        </div>
+      </div>
+
+      <!-- Etapa Procesal -->
+      <div class="flex items-start gap-3">
+        <i class="pi pi-sitemap text-primary text-lg"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Etapa Procesal:</div>
+          <div>{{ expedienteSeleccionado.etapaProcesal || "N/A" }}</div>
+        </div>
+      </div>
+
+      <!-- Juzgado -->
+      <div class="flex items-start gap-3">
+        <i class="pi pi-briefcase text-primary text-lg"></i>
+        <div>
+          <div class="font-semibold text-gray-800">Juzgado:</div>
+          <div>{{ expedienteSeleccionado.juzgado || "N/A" }}</div>
+        </div>
+      </div>
+
+      <!-- Fecha de Apertura -->
+      <div class="flex items-start gap-3 md:col-span-2">
+        <i class="pi pi-calendar text-primary text-lg"></i>
         <div>
           <div class="font-semibold text-gray-800">Fecha de Apertura:</div>
           <div>
@@ -132,25 +164,24 @@
     </div>
 
     <!-- Descripción -->
-    <div class="mt-2">
+    <div>
       <div class="font-semibold text-gray-800 mb-1">Descripción:</div>
       <div class="p-3 bg-surface-100 rounded-md text-justify">
         {{ expedienteSeleccionado.descripcion }}
       </div>
     </div>
-
     <!-- Archivos -->
-    <div>
-      <div class="font-semibold text-gray-800 mt-4 mb-2">
-        Archivos adjuntos:
-      </div>
+    <div class="mt-6">
+      <div class="font-semibold text-gray-800 mb-2">Archivos adjuntos:</div>
+
+      @if (tieneArchivos) {
       <ul class="space-y-2">
+        @for (archivo of expedienteSeleccionado.archivos; track archivo.id) {
         <li
-          *ngFor="let archivo of expedienteSeleccionado.archivos"
           class="flex items-center justify-between bg-surface-100 px-4 py-2 rounded-md"
         >
-          <div class="flex items-center gap-2">
-            <i class="pi pi-file text-gray-500"></i>
+          <div class="flex items-center gap-2 text-sm text-gray-700">
+            <i class="pi pi-file text-primary text-base"></i>
             <span>{{ archivo.nombre }}</span>
           </div>
           <button
@@ -161,7 +192,18 @@
             label="Descargar"
           ></button>
         </li>
+        }
       </ul>
+      } @else {
+      <div
+        class="p-4 bg-yellow-50 text-yellow-800 text-sm rounded-md border border-yellow-200 flex items-center gap-2"
+      >
+        <i class="pi pi-info-circle"></i>
+        Aún no se han agregado archivos a este expediente.
+      </div>
+      }
     </div>
   </div>
+
+  }
 </p-dialog>
