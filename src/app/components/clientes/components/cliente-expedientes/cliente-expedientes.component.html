@@ -99,6 +99,7 @@
   [dismissableMask]="false"
   [draggable]="false"
 >
+  <p-toast></p-toast>
   @if (expedienteSeleccionado) {
   <div class="space-y-6 text-sm text-gray-700">
     <!-- Información general del expediente -->
@@ -182,7 +183,7 @@
         >
           <div class="flex items-center gap-2 text-sm text-gray-700">
             <i class="pi pi-file text-primary text-base"></i>
-            <span>{{ archivo.nombre }}</span>
+            <span>{{ archivo.titulo }}</span>
           </div>
           <button
             pButton
@@ -207,3 +208,5 @@
 
   }
 </p-dialog>
+
+<p-confirmdialog />

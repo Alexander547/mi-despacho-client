@@ -1,0 +1,207 @@
+<h2 class="text-2xl font-semibold text-gray-800 mb-6">🗂️ Expediente</h2>
+
+<form [formGroup]="expedienteForm" class="grid gap-8">
+  <!-- Información General -->
+  <div class="bg-white p-6 rounded-lg shadow-md space-y-6">
+    <h3 class="text-lg font-semibold text-gray-700">Información General</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+      <!-- Título (80%) -->
+      <div class="p-fluid md:col-span-4 w-full">
+        <label for="titulo" class="block font-medium text-gray-700 mb-1"
+          >Título <em class="text-red-400">*</em></label
+        >
+        <input
+          id="titulo"
+          pInputText
+          formControlName="titulo"
+          placeholder="Título del expediente"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Tipo de Expediente (20%) -->
+      <div class="p-fluid md:col-span-1">
+        <label for="tipo" class="block font-medium text-gray-700 mb-1"
+          >Tipo de Expediente <em class="text-red-400">*</em></label
+        >
+        <p-select
+          [options]="tiposExpediente"
+          formControlName="tipoExpedienteId"
+          placeholder="Seleccione"
+          optionLabel="nombre"
+          optionValue="id"
+          class="w-full"
+          appendTo="body"
+        ></p-select>
+      </div>
+
+      <!-- Descripción (debajo de los anteriores) -->
+      <div class="p-fluid md:col-span-5 w-full">
+        <label for="descripcion" class="block font-medium text-gray-700 mb-1"
+          >Descripción <em class="text-red-400">*</em></label
+        >
+        <textarea
+          id="descripcion"
+          pInputTextarea
+          formControlName="descripcion"
+          rows="3"
+          placeholder="Breve descripción del expediente"
+          class="w-full"
+          [autoResize]="true"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información Procesal -->
+  <div class="bg-white p-6 rounded-lg shadow-md space-y-6">
+    <h3 class="text-lg font-semibold text-gray-700">Información Procesal</h3>
+
+    <!-- Etapa Procesal (100%) -->
+    <div class="p-fluid w-full">
+      <label for="etapa" class="block font-medium text-gray-700 mb-1"
+        >Etapa Procesal <em class="text-red-400">*</em></label
+      >
+      <input
+        id="etapa"
+        pInputText
+        formControlName="etapaProcesal"
+        placeholder="Etapa procesal"
+        class="w-full"
+      />
+    </div>
+
+    <!-- Juzgado (80%) y Estado (20%) -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+      <!-- Juzgado -->
+      <div class="p-fluid md:col-span-4">
+        <label for="juzgado" class="block font-medium text-gray-700 mb-1"
+          >Juzgado <em class="text-red-400">*</em></label
+        >
+        <input
+          id="juzgado"
+          pInputText
+          formControlName="juzgado"
+          placeholder="Nombre del juzgado"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Estado -->
+      <div class="p-fluid md:col-span-1">
+        <label for="estado" class="block font-medium text-gray-700 mb-1"
+          >Estado <em class="text-red-400">*</em></label
+        >
+        <p-select
+          [options]="estadosExpediente"
+          formControlName="estado"
+          placeholder="Seleccione el estado"
+          class="w-full"
+          appendTo="body"
+        ></p-select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Archivos Adjuntos -->
+  <div class="bg-white p-6 rounded-lg shadow-md space-y-6">
+    <h3 class="text-lg font-semibold text-gray-700">📎 Archivos Adjuntos</h3>
+
+    <!-- Selector de Archivos -->
+    <div class="p-fluid">
+      <label class="block font-medium text-gray-700 mb-2"
+        >Seleccionar Archivos</label
+      >
+
+      <label
+        for="archivo"
+        class="flex items-center gap-2 cursor-pointer px-4 py-2 bg-blue-100 text-blue-700 border border-blue-300 rounded-md hover:bg-blue-200 transition-colors w-max"
+      >
+        <i class="pi pi-paperclip"></i>
+        <span>Elegir archivos</span>
+      </label>
+
+      <input
+        type="file"
+        id="archivo"
+        (change)="onFilesSelected($event)"
+        multiple
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+        class="hidden"
+      />
+    </div>
+
+    <!-- Lista de Archivos Seleccionados -->
+    <div *ngIf="archivos.length > 0" class="space-y-4">
+      <div
+        *ngFor="let archivo of archivos; let i = index"
+        class="border p-4 rounded-md bg-gray-50"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+          <div>
+            <div class="text-sm font-medium text-gray-800">
+              {{ archivo.file?.name || archivo.nombreOriginal }}
+            </div>
+            <small class="text-gray-500">{{
+              formatBytes(archivo.file?.size ?? 0)
+            }}</small>
+          </div>
+          <div class="flex justify-end">
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-text"
+              (click)="removeArchivo(i)"
+            ></button>
+          </div>
+        </div>
+
+        <!-- Título y Descripción -->
+        <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input
+            pInputText
+            placeholder="Título del archivo"
+            [(ngModel)]="archivo.titulo"
+            [ngModelOptions]="{ standalone: true }"
+            name="titulo{{ i }}"
+            required
+          />
+          <input
+            pInputText
+            placeholder="Descripción"
+            [(ngModel)]="archivo.descripcion"
+            [ngModelOptions]="{ standalone: true }"
+            name="descripcion{{ i }}"
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay archivos -->
+    <p *ngIf="archivos.length === 0" class="text-sm text-gray-500 italic">
+      No se han agregado archivos aún.
+    </p>
+  </div>
+
+  <!-- Acciones -->
+  <div class="flex justify-end gap-3 mt-4">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      class="p-button-text"
+      (click)="cancelar()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-save"
+      class="p-button-primary"
+      (click)="guardar()"
+      [disabled]="expedienteForm.invalid || !camposArchivosCompletos()"
+    ></button>
+  </div>
+</form>

@@ -1,5 +1,7 @@
 export interface Archivo {
   id: string;
   url: string;
-  nombre: string;
+  titulo: string;
+  descripcion: string;
+  nombreOriginal?: string;
 }

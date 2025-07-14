@@ -1,4 +1,4 @@
-@if (loading) {
+@if (loading()) {
 <div class="flex justify-center items-center">
   <p class="text-lg text-gray-500 animate-pulse">
     Cargando datos del cliente...
@@ -62,3 +62,5 @@
   [expedientes]="cliente.expedientes"
 ></app-cliente-expedientes>
 }
+
+<p-toast></p-toast>
