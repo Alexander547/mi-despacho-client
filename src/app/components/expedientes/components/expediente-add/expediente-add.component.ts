@@ -171,33 +171,45 @@ export class ExpedienteAddComponent implements OnInit {
       });
     }
 
-    const peticion = this.esEdicion
-      ? this.expedienteService.actualizarExpedienteConArchivos(
-          this.expedienteEnEdicion!.id,
-          formData
-        )
-      : this.expedienteService.crearExpedienteConArchivos(formData);
+    if (this.expedienteEnEdicion && this.expedienteEnEdicion.id) {
+      this.actualizarExpediente(this.expedienteEnEdicion.id, formData);
+    } else {
+      this.createExpediente(formData);
+    }
+  }
 
-    peticion.pipe(take(1)).subscribe({
-      next: (res) => this.ref.close(res),
-      error: (err) => console.error('Error:', err),
-      complete: () => this.show(),
-    });
+  createExpediente(formData: FormData) {
+    this.expedienteService
+      .crearExpedienteConArchivos(formData)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.ref.close(res);
+        },
+        error: (err) => {
+          console.error('Error al crear expediente:', err);
+        },
+        complete: () => {
+          this.show();
+        },
+      });
+  }
 
-    // this.expedienteService
-    //   .crearExpedienteConArchivos(formData)
-    //   .pipe(take(1))
-    //   .subscribe({
-    //     next: (res) => {
-    //       this.ref.close(res);
-    //     },
-    //     error: (err) => {
-    //       console.error('Error al crear expediente:', err);
-    //     },
-    //     complete: () => {
-    //       this.show();
-    //     },
-    //   });
+  actualizarExpediente(id: string, formData: FormData) {
+    this.expedienteService
+      .actualizarExpedienteConArchivos(id, formData)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.ref.close(res);
+        },
+        error: (err) => {
+          console.error('Error al crear expediente:', err);
+        },
+        complete: () => {
+          this.show();
+        },
+      });
   }
 
   cancelar() {
